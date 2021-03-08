@@ -1,3 +1,4 @@
+package com.sunat.camera
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -46,12 +47,11 @@ class MainActivity : AppCompatActivity() {
         video_capture_button.setOnTouchListener{_, event ->
             if(event.action == MotionEvent.ACTION_DOWN) {
                 video_capture_button.setBackgroundColor(Color.RED)
-                val videoCapture = videoCapture ?: return
 
                 val videoFile = File("Download",SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".mp4")
 
                 val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
-                videoCapture.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object : VideoCapture.OnVideoSavedCallback{
+                videoCapture?.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object : VideoCapture.OnVideoSavedCallback{
                     override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
                         val savedUri = Uri.fromFile(videoFile)
                         val msg = "Video capture succeeded: $savedUri"
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
             else if (event.action == MotionEvent.ACTION_UP){
                 video_capture_button.setBackgroundColor(Color.GREEN)
-                videoCapture.stopRecording()
+                videoCapture?.stopRecording()
                 Log.i(TAG, "Video File stopped")
             }
             false
